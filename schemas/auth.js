@@ -1,9 +1,9 @@
 const Yup = require("yup");
 
-exports.login = Yup.object({
-  email: Yup.string().required(),
-  password: Yup.string().required(),
-}).required();
+exports.login = Yup.object().shape({
+  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+  password: Yup.string().max(255).required('Password is required')
+});
 
 exports.signUp = Yup.object({
   email: Yup.string().required(),
