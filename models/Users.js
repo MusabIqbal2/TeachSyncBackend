@@ -5,6 +5,12 @@ const UserSchema = new mongoose.Schema({
     password: String,
     firstName: String,
     lastName: String,
+    role: String,
+    program: String,
+    batch: String,
+    coursesAssigned: [String],
+    officeHours: String,
+    department: String,
     createdAt: {
         type: Date,
         default: Date.now

@@ -1,13 +1,39 @@
 const Yup = require("yup");
 
-exports.login = Yup.object().shape({
-  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-  password: Yup.string().max(255).required('Password is required')
-});
+exports.login = Yup.object({
+  email: Yup.string().required(),
+  password: Yup.string().required(),
+}).required();
 
 exports.signUp = Yup.object({
   email: Yup.string().required(),
   firstName: Yup.string().required(),
   lastName: Yup.string().required(),
   password: Yup.string().min(8).required(),
+  role: Yup.string().required(),
+  program: Yup.string().when('role', {
+    is: (role) => ['Student', 'TA'].includes(role),
+    then: (schema) => schema.required(),
+    otherwise: (schema) => schema
+  }),
+  batch: Yup.string().when('role', {
+    is: (role) => ['Student', 'TA'].includes(role),
+    then: (schema) => schema.required(),
+    otherwise: (schema) => schema
+  }),
+  coursesAssigned: Yup.array().of(Yup.string()).when('role', {
+    is: (role) => ['TA', 'Professor'].includes(role),
+    then: (schema) => schema.required(),
+    otherwise: (schema) => schema
+  }),
+  officeHours: Yup.string().when('role', {
+    is: (role) => ['TA', 'Professor'].includes(role),
+    then: (schema) => schema.required(),
+    otherwise: (schema) => schema
+  }),
+  department: Yup.string().when('role', {
+    is: (role) => ['TA', 'Professor'].includes(role),
+    then: (schema) => schema.required(),
+    otherwise: (schema) => schema
+  }),
 }).required();

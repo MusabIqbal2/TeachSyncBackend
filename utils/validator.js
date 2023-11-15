@@ -13,6 +13,7 @@ exports.validator = (controller = () => { }, authorized = this.roles.unauthorize
             try {
                 schema.validateSync(req.body, { abortEarly: false, stripUnknown: true });
             } catch (e) {
+                console.log(e)
                 return responseHandler(res, { response: responses.badRequest, data: e.errors })
             }
         }

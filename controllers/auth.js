@@ -5,10 +5,21 @@ const Users = require("../models/Users");
 
 exports.signup = async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { email, password, firstName, lastName, role, program, batch, coursesAssigned, officeHours, department } = req.body
         let user = await Users.findOne({ email })
         if (user) return responseHandler(res, { response: responses.userExists })
-        await Users.create({ ...req.body, password: await bcrypt.hash(password, 5) });
+
+        let userDetails = { email, password: await bcrypt.hash(password, 5), firstName, lastName, role };
+
+        if (role === 'Student' || role === 'TA') {
+            userDetails = { ...userDetails, program, batch };
+        }
+
+        if (role === 'TA' || role === 'Professor') {
+            userDetails = { ...userDetails, coursesAssigned, officeHours, department };
+        }
+
+        await Users.create(userDetails);
         responseHandler(res)
     } catch (error) {
         responseHandler(res, { response: responses.serverError, error })
