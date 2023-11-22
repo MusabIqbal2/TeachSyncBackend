@@ -6,5 +6,6 @@ const controllers = require("../controllers/auth");
 
 router.post("/signUp", validator(controllers.signup, roles.unauthorized, schemas.signUp));
 router.post("/login", validator(controllers.login, roles.unauthorized, schemas.login));
+router.post("/change-password", controllers.changePassword);
 
 module.exports = router;

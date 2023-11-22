@@ -21,6 +21,7 @@ const responses = {
     unauthorized: ["401", "Unauthorized", 401],
     notFound: ["404", "Not Found", 404],
     serverError: ["500", "Internal Server Error", 500],
+    passwordChangedSuccessfully: ["200", "Password changed Successfully"]
 }
 
 const defaultConfig = {

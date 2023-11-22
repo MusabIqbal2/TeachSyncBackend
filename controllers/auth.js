@@ -42,3 +42,25 @@ exports.login = async (req, res) => {
         responseHandler(res, { response: responses.serverError, error })
     }
 }
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { email, oldPassword, newPassword } = req.body;
+    const user = await Users.findOne({ email });
+
+    if (!user) return responseHandler(res, { response: responses.userNotFound });
+
+    const validPassword = await bcrypt.compare(oldPassword, user.password);
+
+    if (!validPassword) return responseHandler(res, { response: responses.invalidPassword });
+
+    user.password = await bcrypt.hash(newPassword, 5);
+    await user.save();
+
+    responseHandler(res, { response: responses.passwordChangedSuccessfully });
+  } catch (error) {
+    responseHandler(res, { response: responses.serverError, error });
+  }
+};
+
+  
