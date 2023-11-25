@@ -9,14 +9,6 @@ exports.roles = {
 
 exports.validator = (controller = () => { }, authorized = this.roles.unauthorized, schema = false) => async (req, res) => {
     try {
-        if (schema) {
-            try {
-                schema.validateSync(req.body, { abortEarly: false, stripUnknown: true });
-            } catch (e) {
-                console.log(e)
-                return responseHandler(res, { response: responses.badRequest, data: e.errors })
-            }
-        }
         if (authorized === this.roles.authorized || authorized === this.roles.admin) {
             try {
                 const token = req.headers.authorization;

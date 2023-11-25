@@ -26,7 +26,7 @@ exports.signUp = Yup.object({
     then: (schema) => schema.required(),
     otherwise: (schema) => schema
   }),
-  officeHours: Yup.string().when('role', {
+  officeHours: Yup.array().of(Yup.string()).when('role', {
     is: (role) => ['TA', 'Professor'].includes(role),
     then: (schema) => schema.required(),
     otherwise: (schema) => schema
@@ -37,3 +37,11 @@ exports.signUp = Yup.object({
     otherwise: (schema) => schema
   }),
 }).required();
+
+exports.updateProfile = Yup.object({
+  firstName: Yup.string().required(),
+  lastName: Yup.string().required(),
+  coursesAssigned: Yup.array().of(Yup.string()).required(),
+  officeHours: Yup.array().of(Yup.string()).required(),
+  department: Yup.string().required(),
+}).required()
