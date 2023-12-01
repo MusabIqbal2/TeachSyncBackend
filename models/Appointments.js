@@ -5,6 +5,10 @@ const AppointmentSchema = new mongoose.Schema({
     appointee: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
     dateTime: Date,
     description: String,
+    confirmed: {
+        type: Number,
+        default: 0
+    },
     completed: {
         type: Boolean,
         default: false

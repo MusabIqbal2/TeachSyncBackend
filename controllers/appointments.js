@@ -44,3 +44,40 @@ exports.create = async (req, res) => {
         responseHandler(res, { response: responses.serverError, error });
     }
 }
+
+exports.getAll = async (req, res) => {
+    try {
+        const id = req.user.id;
+        const appointments = await Appointments.find({
+            $or: [
+                { appointee: id },
+                { appointer: id }
+            ]
+        })
+        responseHandler(res, {
+            data: appointments,
+        });
+    } catch (error) {
+        responseHandler(res, { response: responses.serverError, error });
+    }
+
+}
+
+exports.update = async (req, res) => {
+    try {
+        const { id, confirmed, cancelled, completed, dateTime, description } = req.body;
+        const appointment = await Appointments.findById(id)
+        console.log(appointment)
+        if (!appointment) return responseHandler(res, { response: responses.notFound });
+        await appointment.updateOne({
+            confirmed: confirmed !== undefined ? confirmed ? 2 : 1 : appointment.confirmed,
+            cancelled: cancelled || appointment.cancelled,
+            completed: completed || appointment.completed,
+            dateTime: dateTime || appointment.dateTime,
+            description: description || appointment.description,
+        })
+        responseHandler(res);
+    } catch (error) {
+        responseHandler(res, { response: responses.serverError, error });
+    }
+}

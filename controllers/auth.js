@@ -66,7 +66,7 @@ exports.forgetPassword = async (req, res) => {
         const user = await Users.findOne({ email })
         if (user) {
             const newPassword = helpers.generateAlphanumericPassword();
-            user.updateOne({ password: await bcrypt.hash(newPassword, 5) })
+            await user.updateOne({ password: await bcrypt.hash(newPassword, 5) })
             await helpers.transporter.sendMail({
                 from: 'hammad1029@gmail.com',
                 to: user.email,
