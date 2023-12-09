@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     program: String,
     batch: String,
     coursesAssigned: [String],
-    officeHours: [String],
+    officeHours: [],
     department: String,
     createdAt: {
         type: Date,

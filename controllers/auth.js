@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
-        const user = Users.findOne({ email: req.user.email })
+        const user = await Users.findOne({ email: req.user.email })
         const { firstName, lastName, coursesAssigned, officeHours, department } = req.body;
         user.firstName = firstName;
         user.lastName = lastName;
