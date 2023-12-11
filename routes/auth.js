@@ -8,5 +8,6 @@ router.post("/signUp", validator(controllers.signup, roles.unauthorized, schemas
 router.post("/login", validator(controllers.login, roles.unauthorized, schemas.login));
 router.post("/updateProfile", validator(controllers.updateProfile, roles.authorized, schemas.login));
 router.post("/forgetPassword", validator(controllers.forgetPassword, roles.unauthorized));
+router.post("/changePassword", validator(controllers.changePassword, roles.unauthorized));
 
 module.exports = router;
