@@ -6,7 +6,7 @@ const Appointments = require("../models/Appointments");
 
 exports.search = async (req, res) => {
     try {
-        const likeKeywordSearch = { $regex: new RegExp(req.body.keyword, 'i') };
+        const likeKeywordSearch = { $regex: '.*' + req.body.keyword.toLowerCase() + '.*' };
         const searchResults = await Users.find({
             $or: [
                 { firstName: likeKeywordSearch },
@@ -36,7 +36,8 @@ exports.create = async (req, res) => {
         // req = appointee (teacher). date, description
         await Appointments.create({
             ...req.body,
-            dateTime: new Date(req.body.date),
+            fromDate: new Date(req.body.fromDate),
+            toDate: new Date(req.body.toDate),
             appointer: req.user.id
         })
         responseHandler(res);

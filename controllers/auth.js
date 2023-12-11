@@ -85,3 +85,15 @@ exports.forgetPassword = async (req, res) => {
         responseHandler(res, { response: responses.serverError, error });
     }
 }
+
+exports.changePassword = async (req, res) => {
+    try {
+        const { password, confirmPassword } = req.body
+        if (password !== confirmPassword) responseHandler(res, { response: responses.invalidPassword });
+        const user = await Users.findOne({ email: req.user.email })
+        if (user) await user.updateOne({ password: await bcrypt.hash(password, 5) })
+        responseHandler(res);
+    } catch (error) {
+        responseHandler(res, { response: responses.serverError, error });
+    }
+}
