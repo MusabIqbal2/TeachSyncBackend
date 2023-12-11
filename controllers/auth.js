@@ -6,9 +6,12 @@ const helpers = require("../utils/helpers")
 
 exports.signup = async (req, res) => {
     try {
-        const { email, password, firstName, lastName, role, program, batch, coursesAssigned, officeHours, department } = req.body
-        let user = await Users.findOne({ email })
-        if (user) return responseHandler(res, { response: responses.userExists })
+        const { email, password, firstName, lastName, role, program, batch, coursesAssigned, officeHours, department } = req.body;
+        let user = await Users.findOne({ email });
+
+        if (user) {
+            return responseHandler(res, { response: responses.userExists });
+        }
 
         let userDetails = { email, password: await bcrypt.hash(password, 5), firstName, lastName, role };
 
@@ -17,13 +20,16 @@ exports.signup = async (req, res) => {
         }
 
         if (role === 'TA' || role === 'Professor') {
-            userDetails = { ...userDetails, coursesAssigned, officeHours, department };
+            // Split the coursesAssigned string into an array
+            const coursesArray = coursesAssigned.split(',').map(course => course.trim());
+            
+            userDetails = { ...userDetails, coursesAssigned: coursesArray, officeHours, department };
         }
 
         await Users.create(userDetails);
-        responseHandler(res)
+        responseHandler(res);
     } catch (error) {
-        responseHandler(res, { response: responses.serverError, error })
+        responseHandler(res, { response: responses.serverError, error });
     }
 }
 

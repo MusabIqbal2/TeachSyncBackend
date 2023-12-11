@@ -53,7 +53,8 @@ exports.getAll = async (req, res) => {
                 { appointee: id },
                 { appointer: id }
             ]
-        })
+        }).populate("appointee").populate("appointer")
+
         responseHandler(res, {
             data: appointments,
         });
