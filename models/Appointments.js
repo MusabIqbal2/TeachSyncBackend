@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const AppointmentSchema = new mongoose.Schema({
     appointer: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
     appointee: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
-    fromDate: Date,
-    toDate: Date,
+    fromDate: String,
+    toDate: String,
     description: String,
     confirmed: {
         type: Number,

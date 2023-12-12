@@ -36,8 +36,6 @@ exports.create = async (req, res) => {
         // req = appointee (teacher). date, description
         await Appointments.create({
             ...req.body,
-            fromDate: new Date(req.body.fromDate),
-            toDate: new Date(req.body.toDate),
             appointer: req.user.id
         })
         responseHandler(res);
@@ -75,7 +73,6 @@ exports.update = async (req, res) => {
             confirmed: confirmed !== undefined ? confirmed ? 2 : 1 : appointment.confirmed,
             cancelled: cancelled || appointment.cancelled,
             completed: completed || appointment.completed,
-            dateTime: dateTime || appointment.dateTime,
             description: description || appointment.description,
         })
         responseHandler(res);
