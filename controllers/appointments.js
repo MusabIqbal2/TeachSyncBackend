@@ -6,7 +6,8 @@ const Appointments = require("../models/Appointments");
 
 exports.search = async (req, res) => {
     try {
-        const likeKeywordSearch = { $regex: '.*' + req.body.keyword.toLowerCase() + '.*' };
+        const keyword = req.body.keyword.trim(); // Remove leading and trailing spaces
+        const likeKeywordSearch = { $regex: new RegExp(keyword.split(' ').map(term => `.*${term}.*`).join('|'), 'i') };
         const searchResults = await Users.find({
             $or: [
                 { firstName: likeKeywordSearch },
@@ -36,6 +37,7 @@ exports.create = async (req, res) => {
         // req = appointee (teacher). date, description
         await Appointments.create({
             ...req.body,
+            dateTime: new Date(req.body.date),
             appointer: req.user.id
         })
         responseHandler(res);
@@ -73,6 +75,7 @@ exports.update = async (req, res) => {
             confirmed: confirmed !== undefined ? confirmed ? 2 : 1 : appointment.confirmed,
             cancelled: cancelled || appointment.cancelled,
             completed: completed || appointment.completed,
+            dateTime: dateTime || appointment.dateTime,
             description: description || appointment.description,
         })
         responseHandler(res);
