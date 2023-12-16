@@ -37,7 +37,6 @@ exports.create = async (req, res) => {
         // req = appointee (teacher). date, description
         await Appointments.create({
             ...req.body,
-            dateTime: new Date(req.body.date),
             appointer: req.user.id
         })
         responseHandler(res);
